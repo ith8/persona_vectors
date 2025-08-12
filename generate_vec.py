@@ -40,12 +40,36 @@ import os
 def get_persona_effective(pos_path, neg_path, trait, threshold=50):
     persona_pos = pd.read_csv(pos_path)
     persona_neg = pd.read_csv(neg_path)
-    mask = (persona_pos[trait] >=threshold) & (persona_neg[trait] < 100-threshold) & (persona_pos["coherence"] >= 50) & (persona_neg["coherence"] >= 50)
+
+    # Check if trait values are in small scale (< 1) vs percentage scale (0-100)
+    max_pos_trait = persona_pos[trait].max()
+    max_neg_trait = persona_neg[trait].max()
+
+    if max_pos_trait <= 1.0 and max_neg_trait <= 1.0:
+        # Values are in 0-1 scale, convert threshold accordingly
+        # For small values, use percentile-based thresholds
+        if threshold >= 10:  # If threshold looks like a percentage
+            # Use median as a reasonable threshold for small values
+            actual_threshold = max(persona_pos[trait].median(), 1e-6)
+            print(f"Detected small-scale values. Using threshold: {actual_threshold:.2e} instead of {threshold}")
+        else:
+            actual_threshold = threshold
+        mask = (persona_pos[trait] >= actual_threshold) & (persona_neg[trait] < actual_threshold) & (persona_pos["coherence"] >= 50) & (persona_neg["coherence"] >= 50)
+    else:
+        # Values are in 0-100 scale, use original logic
+        mask = (persona_pos[trait] >= threshold) & (persona_neg[trait] < 100-threshold) & (persona_pos["coherence"] >= 50) & (persona_neg["coherence"] >= 50)
 
     persona_pos_effective = persona_pos[mask]
     persona_neg_effective = persona_neg[mask]
 
-    persona_pos_effective_prompts = persona_pos_effective["prompt"].tolist()    
+    print(f"Filtered data: {mask.sum()} rows pass the filtering criteria")
+    print(f"Positive samples: {len(persona_pos_effective)}")
+    print(f"Negative samples: {len(persona_neg_effective)}")
+
+    if mask.sum() == 0:
+        raise ValueError("No rows pass the filtering criteria. Try adjusting the threshold or check your data.")
+
+    persona_pos_effective_prompts = persona_pos_effective["prompt"].tolist()
     persona_neg_effective_prompts = persona_neg_effective["prompt"].tolist()
 
     persona_pos_effective_responses = persona_pos_effective["answer"].tolist()
