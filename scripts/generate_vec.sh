@@ -23,6 +23,6 @@ CUDA_VISIBLE_DEVICES=0 python generate_vec.py \
     --model_name Qwen/Qwen2.5-7B-Instruct \
     --pos_path eval_persona_extract/Qwen2.5-7B-Instruct/sycophantic_pos_instruct.csv \
     --neg_path eval_persona_extract/Qwen2.5-7B-Instruct/sycophantic_neg_instruct.csv \
-    --trait evil \
+    --trait sycophantic \
     --save_dir persona_vectors/Qwen2.5-7B-Instruct/ \
     --threshold 50
