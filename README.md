@@ -51,9 +51,9 @@ Evaluate models without any interventions:
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python -m eval.eval_persona \
-    --model path/to/your/model \
-    --trait evil \
-    --output_path path/to/results.csv \
+    --model Qwen/Qwen2.5-7B-Instruct \
+    --trait anti-sycophantic \
+    --output_path eval_persona_extract/Qwen2.5-7B-Instruct/anti-sycophantic_eval.csv \
     --judge_model gpt-4.1-mini-2025-04-14  \
     --version eval
 ```
@@ -70,20 +70,20 @@ Generate activations using positive and negative system prompts:
 # Positive system prompt evaluation
 CUDA_VISIBLE_DEVICES=0 python -m eval.eval_persona \
     --model Qwen/Qwen2.5-7B-Instruct \
-    --trait evil \
-    --output_path eval_persona_extract/Qwen2.5-7B-Instruct/evil_pos_instruct.csv \
+    --trait anti-sycophantic \
+    --output_path eval_persona_extract/Qwen2.5-7B-Instruct/anti-sycophantic_pos_instruct.csv \
     --persona_instruction_type pos \
-    --assistant_name evil \
+    --assistant_name assistant \
     --judge_model gpt-4.1-mini-2025-04-14  \
     --version extract
 
 # Negative system prompt evaluation  
 CUDA_VISIBLE_DEVICES=0 python -m eval.eval_persona \
     --model Qwen/Qwen2.5-7B-Instruct \
-    --trait evil \
-    --output_path eval_persona_extract/Qwen2.5-7B-Instruct/evil_neg_instruct.csv \
+    --trait anti-sycophantic \
+    --output_path eval_persona_extract/Qwen2.5-7B-Instruct/anti-sycophantic_neg_instruct.csv \
     --persona_instruction_type neg \
-    --assistant_name helpful \
+    --assistant_name assistant \
     --judge_model gpt-4.1-mini-2025-04-14  \
     --version extract
 ```
