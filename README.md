@@ -100,9 +100,9 @@ Generate vectors using mean difference between positive and negative activations
 ```bash
 python generate_vec.py \
     --model_name Qwen/Qwen2.5-7B-Instruct \
-    --pos_path eval_persona_extract/Qwen2.5-7B-Instruct/evil_pos_instruct.csv \
-    --neg_path eval_persona_extract/Qwen2.5-7B-Instruct/evil_neg_instruct.csv \
-    --trait evil \
+    --pos_path eval_persona_extract/Qwen2.5-7B-Instruct/anti-sycophantic_pos_instruct.csv \
+    --neg_path eval_persona_extract/Qwen2.5-7B-Instruct/anti-sycophantic_neg_instruct.csv \
+    --trait anti-sycophantic \
     --save_dir persona_vectors/Qwen2.5-7B-Instruct/
 ```
 
