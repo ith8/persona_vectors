@@ -6,6 +6,7 @@
 dataset/
 eval_persona_extract/
 eval_persona_eval/
+patched_models/
 
 # Environment variables and secrets
 .env
