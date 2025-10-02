@@ -112,3 +112,28 @@ Based on your generated vectors:
 - Uses layer 20 by default (can be adjusted)
 - Maintains conversation context across turns
 - Supports both positive and negative steering coefficients
+
+## Related: Permanent Model Patching
+
+If you want to create standalone models with persona behavior built-in (no runtime steering needed), check out the `upload_patched_models.py` script. It supports two patching methods:
+
+### Standard Patching
+Applies persona vectors directly to specific layers:
+```bash
+python upload_patched_models.py \
+    --persona contrarian \
+    --layers 18 20 25 \
+    --coef 1.5
+```
+
+### Incremental Patching (NEW)
+Applies incremental vectors (v_inc[l] = v[l] - v[l-1]) to all layers for smoother transitions:
+```bash
+python upload_patched_models.py \
+    --persona contrarian \
+    --coef 1.0 \
+    --incremental \
+    --unit_norm_inc
+```
+
+See `UPLOAD_README.md` for more details on creating permanently patched models.
